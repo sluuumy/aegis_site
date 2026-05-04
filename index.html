@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aegis Network Solutions — Réseaux & Sécurité à Saint-Martin</title>
+<meta name="description" content="Installation réseau Wi-Fi, vidéosurveillance, fibre optique et Starlink à Saint-Martin. Aegis Network Solutions – solutions haut de gamme pour particuliers et professionnels.">
+<meta name="keywords" content="réseau informatique Saint-Martin, installation Wi-Fi, caméra surveillance, fibre optique, Starlink, dépannage réseau">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy-mid: #0d1f3c;
+  --navy-light: #122b52;
+  --blue: #1a6bff;
+  --blue-light: #4d8fff;
+  --blue-glow: rgba(26,107,255,0.18);
+  --cyan: #00c8f0;
+  --cyan-dim: rgba(0,200,240,0.12);
+  --green: #00c896;
+  --green-dim: rgba(0,200,150,0.12);
+  --white: #f4f7ff;
+  --white-dim: rgba(244,247,255,0.06);
+  --white-mid: rgba(244,247,255,0.55);
+  --text: #e8eeff;
+  --text-muted: rgba(200,210,240,0.65);
+  --border: rgba(100,140,220,0.14);
+  --border-glow: rgba(26,107,255,0.35);
+  --card-bg: rgba(13,31,60,0.7);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-pill: 100px;
+  --transition: all 0.38s cubic-bezier(0.22,1,0.36,1);
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background-color:var(--navy);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.65;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+/* ─── Canvas réseau ─── */
+#network-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.45}
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 clamp(1.5rem,5vw,4rem);
+  height:70px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,22,40,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:var(--transition);
+}
+nav.scrolled{background:rgba(10,22,40,0.97);box-shadow:0 4px 40px rgba(0,0,0,.4)}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.logo-mark{width:38px;height:38px;position:relative}
+.logo-mark svg{width:100%;height:100%}
+.nav-brand{font-family:var(--font-head);font-size:1.15rem;font-weight:700;color:var(--white);letter-spacing:-.01em;line-height:1.1}
+.nav-brand span{display:block;font-size:.65rem;font-weight:400;color:var(--cyan);letter-spacing:.12em;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:.88rem;font-weight:400;letter-spacing:.01em;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--cyan);transition:width .25s}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--blue);color:#fff;padding:.5rem 1.3rem;border-radius:var(--radius-pill);font-size:.85rem;font-weight:500;text-decoration:none;transition:var(--transition);border:none;cursor:pointer}
+.nav-cta:hover{background:var(--blue-light);box-shadow:0 0 20px var(--blue-glow),0 0 0 2px var(--blue)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;border:none;background:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:var(--transition)}
+.mobile-menu{display:none;position:fixed;top:70px;left:0;right:0;background:rgba(10,22,40,0.98);backdrop-filter:blur(20px);padding:2rem;z-index:99;flex-direction:column;gap:1.5rem;border-bottom:1px solid var(--border)}
+.mobile-menu a{color:var(--text);text-decoration:none;font-size:1.1rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
+/* ─── HERO ─── */
+#hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:6rem clamp(1.5rem,6vw,5rem) 4rem;
+  text-align:center;z-index:1;overflow:hidden;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--cyan-dim);border:1px solid rgba(0,200,240,.25);
+  color:var(--cyan);font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  padding:.4rem 1rem;border-radius:var(--radius-pill);margin-bottom:2rem;
+  animation:fadeUp .8s .2s both;
+}
+.hero-badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-title{
+  font-family:var(--font-head);
+  font-size:clamp(2.6rem,7vw,5.5rem);
+  font-weight:800;line-height:1.05;
+  letter-spacing:-.03em;color:var(--white);
+  animation:fadeUp .8s .35s both;
+  max-width:14ch;margin:0 auto .5rem;
+}
+.hero-title .accent{
+  background:linear-gradient(135deg,var(--blue-light),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:clamp(1rem,2vw,1.2rem);color:var(--text-muted);font-weight:300;
+  max-width:520px;margin:0 auto 2.5rem;line-height:1.7;
+  animation:fadeUp .8s .5s both;
+}
+.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .65s both}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--blue);color:#fff;
+  padding:.85rem 2rem;border-radius:var(--radius-pill);
+  font-size:.95rem;font-weight:500;text-decoration:none;
+  transition:var(--transition);border:none;cursor:pointer;
+}
+.btn-primary:hover{background:var(--blue-light);box-shadow:0 0 30px rgba(26,107,255,.5),0 0 0 2px var(--blue);transform:translateY(-2px)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--white-dim);color:var(--white);
+  padding:.85rem 2rem;border-radius:var(--radius-pill);
+  font-size:.95rem;font-weight:400;text-decoration:none;
+  border:1px solid var(--border-glow);transition:var(--transition);
+}
+.btn-secondary:hover{background:rgba(244,247,255,.12);transform:translateY(-2px)}
+.hero-stats{
+  display:flex;justify-content:center;gap:clamp(1.5rem,5vw,4rem);
+  margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);
+  animation:fadeUp .8s .8s both;flex-wrap:wrap;
+}
+.stat{text-align:center}
+.stat-n{font-family:var(--font-head);font-size:2rem;font-weight:700;color:var(--white)}
+.stat-label{font-size:.75rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
+/* ─── RJ45 WIRE ANIMATION ─── */
+.wire-divider{position:relative;height:80px;overflow:visible;z-index:1}
+.wire-svg{width:100%;height:80px;display:block}
+/* ─── SECTIONS ─── */
+section{position:relative;z-index:1;padding:clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,5rem)}
+.section-tag{font-size:.72rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:block}
+.section-title{font-family:var(--font-head);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:1rem}
+.section-sub{color:var(--text-muted);font-size:1rem;max-width:540px;line-height:1.7}
+.section-head{margin-bottom:3.5rem}
+.section-head.center{text-align:center}
+.section-head.center .section-sub{margin:0 auto}
+/* ─── SERVICES ─── */
+#services{background:linear-gradient(180deg,transparent 0%,rgba(18,43,82,.25) 100%)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.service-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:2rem;
+  cursor:pointer;
+  transition:var(--transition);
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(8px);
+}
+.service-card::before{
+  content:'';position:absolute;inset:0;border-radius:var(--radius);
+  background:linear-gradient(135deg,var(--blue-glow) 0%,transparent 60%);
+  opacity:0;transition:opacity .35s;
+}
+.service-card:hover{border-color:var(--border-glow);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3),0 0 0 1px var(--border-glow)}
+.service-card:hover::before{opacity:1}
+.service-icon{
+  width:52px;height:52px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.2rem;
+  background:var(--blue-glow);border:1px solid rgba(26,107,255,.25);
+  font-size:1.4rem;transition:transform .35s;
+}
+.service-card:hover .service-icon{transform:scale(1.1) rotate(-5deg)}
+.service-name{font-family:var(--font-head);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:.5rem}
+.service-desc{font-size:.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem}
+.service-price{font-size:.78rem;color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(0,200,240,.2);padding:.3rem .75rem;border-radius:var(--radius-pill);display:inline-block;font-weight:500}
+/* ─── COMPONENT ANIMATION SECTION ─── */
+#animations{overflow:hidden;background:linear-gradient(180deg,rgba(18,43,82,.25) 0%,transparent 100%)}
+.anim-tabs{display:flex;gap:.5rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.anim-tab{
+  padding:.5rem 1.2rem;border-radius:var(--radius-pill);
+  font-size:.82rem;font-weight:500;cursor:pointer;
+  border:1px solid var(--border);color:var(--text-muted);
+  background:transparent;transition:var(--transition);
+}
+.anim-tab.active,.anim-tab:hover{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 16px var(--blue-glow)}
+.anim-stage{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:3rem;
+  display:flex;align-items:center;justify-content:center;
+  min-height:340px;position:relative;overflow:hidden;
+  backdrop-filter:blur(8px);
+}
+/* ─── CAMERA SVG ANIMATION ─── */
+.cam-wrapper{position:relative;width:340px;height:240px}
+.cam-svg-stage{width:100%;height:100%}
+/* ─── WHY US ─── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
+.why-card{
+  padding:1.8rem;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--white-dim);
+  backdrop-filter:blur(6px);transition:var(--transition);
+}
+.why-card:hover{border-color:var(--border-glow);background:rgba(26,107,255,.06);transform:translateY(-3px)}
+.why-icon{font-size:1.8rem;margin-bottom:1rem}
+.why-title{font-family:var(--font-head);font-size:1rem;font-weight:600;color:var(--white);margin-bottom:.5rem}
+.why-text{font-size:.85rem;color:var(--text-muted);line-height:1.6}
+/* ─── TARIFS ─── */
+#tarifs{background:linear-gradient(180deg,transparent 0%,rgba(18,43,82,.3) 100%)}
+.tarifs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.tarif-card{
+  background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);
+  padding:2rem;backdrop-filter:blur(8px);transition:var(--transition);
+}
+.tarif-card:hover{border-color:var(--border-glow);transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.25)}
+.tarif-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--border)}
+.tarif-icon{font-size:1.6rem}
+.tarif-name{font-family:var(--font-head);font-size:1.05rem;font-weight:700;color:var(--white)}
+.tarif-items{display:flex;flex-direction:column;gap:.8rem}
+.tarif-item{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.tarif-label{font-size:.85rem;color:var(--text-muted)}
+.tarif-range{font-size:.82rem;font-weight:500;color:var(--cyan);white-space:nowrap;background:var(--cyan-dim);padding:.2rem .6rem;border-radius:var(--radius-pill);border:1px solid rgba(0,200,240,.2)}
+/* ─── RÉALISATIONS ─── */
+.realisations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.realisation-card{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:4/3;background:var(--card-bg);border:1px solid var(--border);
+  display:flex;align-items:flex-end;cursor:pointer;
+  transition:var(--transition);
+}
+.realisation-card:hover{transform:scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.realisation-img{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:4rem;opacity:.25;
+}
+.realisation-overlay{
+  position:relative;z-index:1;padding:1.2rem;
+  background:linear-gradient(0deg,rgba(10,22,40,.95) 0%,transparent 100%);
+  width:100%;
+}
+.realisation-title{font-family:var(--font-head);font-size:.95rem;font-weight:600;color:var(--white)}
+.realisation-sub{font-size:.78rem;color:var(--text-muted)}
+/* ─── AVIS ─── */
+.avis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.avis-card{
+  background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.8rem;backdrop-filter:blur(8px);transition:var(--transition);
+}
+.avis-card:hover{border-color:var(--border-glow);transform:translateY(-3px)}
+.stars{color:#fbbf24;font-size:1rem;margin-bottom:.8rem;letter-spacing:2px}
+.avis-text{font-size:.88rem;color:var(--text-muted);line-height:1.65;margin-bottom:1.2rem;font-style:italic}
+.avis-author{display:flex;align-items:center;gap:.7rem}
+.avis-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--blue-glow);border:1px solid var(--border-glow);
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:600;color:var(--cyan);
+}
+.avis-name{font-size:.85rem;font-weight:500;color:var(--white)}
+.avis-loc{font-size:.72rem;color:var(--text-muted)}
+/* ─── CONTACT ─── */
+#contact{background:linear-gradient(180deg,rgba(18,43,82,.25) 0%,transparent 100%)}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:1.5rem}
+.contact-item{display:flex;align-items:center;gap:1rem}
+.contact-icon{
+  width:44px;height:44px;border-radius:10px;
+  background:var(--blue-glow);border:1px solid rgba(26,107,255,.25);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;
+}
+.contact-detail{font-size:.9rem;color:var(--text-muted)}
+.contact-detail a{color:var(--cyan);text-decoration:none}
+.contact-detail a:hover{text-decoration:underline}
+.contact-detail strong{display:block;color:var(--white);font-weight:500;font-size:.85rem;margin-bottom:.15rem}
+.contact-form{display:flex;flex-direction:column;gap:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+label{font-size:.8rem;font-weight:500;color:var(--text-muted);letter-spacing:.04em}
+input,textarea,select{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--text);padding:.75rem 1rem;font-family:var(--font-body);font-size:.9rem;
+  transition:border-color .2s,box-shadow .2s;outline:none;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+textarea{resize:vertical;min-height:120px}
+select option{background:var(--navy-mid);color:var(--text)}
+.whatsapp-btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:#25D366;color:#fff;padding:.85rem 1.8rem;border-radius:var(--radius-pill);
+  text-decoration:none;font-weight:500;font-size:.9rem;transition:var(--transition);
+}
+.whatsapp-btn:hover{background:#128C7E;transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.3)}
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);padding:2.5rem clamp(1.5rem,6vw,5rem);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;
+  gap:1.5rem;position:relative;z-index:1;
+}
+.footer-brand{font-family:var(--font-head);font-size:.9rem;font-weight:600;color:var(--white-mid)}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-links a{font-size:.78rem;color:var(--text-muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--white)}
+/* ─── DARK/LIGHT toggle ─── */
+.theme-toggle{
+  position:fixed;top:50%;right:1.5rem;transform:translateY(-50%);
+  z-index:99;display:flex;flex-direction:column;gap:.5rem;
+}
+.theme-btn{
+  width:40px;height:40px;border-radius:50%;border:1px solid var(--border);
+  background:rgba(10,22,40,.8);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;transition:var(--transition);
+}
+.theme-btn:hover{border-color:var(--border-glow);box-shadow:0 0 12px var(--blue-glow)}
+/* ─── CHATBOT ─── */
+#chatbot-toggle{
+  position:fixed;bottom:2rem;right:2rem;z-index:1000;
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(26,107,255,.5),0 0 0 0 rgba(26,107,255,.3);
+  animation:chatPulse 3s infinite;transition:var(--transition);
+}
+#chatbot-toggle:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(26,107,255,.6)}
+@keyframes chatPulse{0%,100%{box-shadow:0 8px 32px rgba(26,107,255,.5),0 0 0 0 rgba(26,107,255,.3)}50%{box-shadow:0 8px 32px rgba(26,107,255,.5),0 0 0 12px rgba(26,107,255,0)}}
+.chat-icon{font-size:1.4rem;transition:transform .3s}
+#chatbot-toggle.open .chat-icon{transform:rotate(90deg)}
+#chatbot-window{
+  position:fixed;bottom:6.5rem;right:2rem;z-index:999;
+  width:360px;max-height:520px;
+  background:rgba(10,22,40,.97);
+  border:1px solid var(--border-glow);border-radius:20px;
+  box-shadow:0 24px 64px rgba(0,0,0,.6),0 0 0 1px rgba(26,107,255,.1);
+  display:flex;flex-direction:column;overflow:hidden;
+  backdrop-filter:blur(20px);
+  transform:scale(0.9) translateY(20px);opacity:0;pointer-events:none;
+  transition:all .35s cubic-bezier(0.34,1.56,0.64,1);
+}
+#chatbot-window.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+.chat-header{
+  padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(26,107,255,.2),rgba(0,200,240,.1));
+  border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.8rem;
+}
+.chat-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;
+}
+.chat-header-info{flex:1}
+.chat-header-name{font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--white)}
+.chat-status{font-size:.72rem;color:var(--green);display:flex;align-items:center;gap:.3rem}
+.chat-status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.chat-close{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:.2rem;transition:color .2s}
+.chat-close:hover{color:var(--white)}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem;max-height:320px}
+.chat-messages::-webkit-scrollbar{width:3px}
+.chat-messages::-webkit-scrollbar-track{background:transparent}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.msg{display:flex;gap:.5rem;align-items:flex-end;animation:msgIn .3s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse}
+.msg-bubble{
+  max-width:78%;padding:.65rem .9rem;border-radius:14px;
+  font-size:.83rem;line-height:1.55;
+}
+.msg.bot .msg-bubble{background:rgba(26,107,255,.15);border:1px solid rgba(26,107,255,.2);color:var(--text);border-bottom-left-radius:4px}
+.msg.user .msg-bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.msg-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.typing-dots{display:flex;gap:3px;align-items:center;padding:.5rem 0}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--blue-light);animation:typingDot 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes typingDot{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1);opacity:1}}
+.quick-replies{padding:.75rem 1rem;display:flex;flex-wrap:wrap;gap:.4rem;border-top:1px solid var(--border)}
+.qr-btn{
+  background:rgba(26,107,255,.1);border:1px solid rgba(26,107,255,.25);
+  color:var(--blue-light);font-size:.73rem;font-weight:500;
+  padding:.35rem .7rem;border-radius:var(--radius-pill);cursor:pointer;
+  transition:var(--transition);white-space:nowrap;
+}
+.qr-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+.chat-input-row{padding:.75rem 1rem;border-top:1px solid var(--border);display:flex;gap:.5rem}
+.chat-input{
+  flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:var(--radius-pill);color:var(--text);padding:.5rem 1rem;
+  font-family:var(--font-body);font-size:.82rem;outline:none;transition:border-color .2s;
+}
+.chat-input:focus{border-color:var(--blue)}
+.chat-send{
+  width:34px;height:34px;border-radius:50%;background:var(--blue);border:none;
+  color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;transition:var(--transition);flex-shrink:0;
+}
+.chat-send:hover{background:var(--blue-light);box-shadow:0 0 12px var(--blue-glow)}
+/* ─── LEAD FORM IN CHAT ─── */
+.chat-lead-form{display:flex;flex-direction:column;gap:.4rem;margin:.3rem 0}
+.chat-lead-input{
+  background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);padding:.5rem .8rem;font-size:.8rem;font-family:var(--font-body);outline:none;
+}
+.chat-lead-input:focus{border-color:var(--blue)}
+.chat-lead-submit{
+  background:var(--green);border:none;color:#fff;
+  padding:.5rem .9rem;border-radius:var(--radius-pill);
+  font-size:.8rem;font-weight:500;cursor:pointer;transition:var(--transition);margin-top:.2rem;
+}
+.chat-lead-submit:hover{background:#00a07a;box-shadow:0 0 12px var(--green-dim)}
+/* ─── SCROLL REVEAL ─── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(0.22,1,0.36,1),transform .7s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+/* ─── KEYFRAMES ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .contact-wrap{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  #chatbot-window{width:calc(100vw - 2.5rem);right:1.25rem;bottom:6rem}
+  .theme-toggle{display:none}
+  footer{flex-direction:column;text-align:center}
+}
+/* ─── LIGHT MODE ─── */
+body.light{
+  --navy:#f0f4ff;--navy-mid:#e4ecff;--navy-light:#d8e4ff;
+  --text:#0d1f3c;--text-muted:#4a6080;
+  --border:rgba(26,107,255,.12);--border-glow:rgba(26,107,255,.35);
+  --card-bg:rgba(255,255,255,.8);--white-dim:rgba(26,107,255,.04);
+}
+body.light nav{background:rgba(240,244,255,.92)}
+body.light #chatbot-window{background:rgba(240,244,255,.97)}
+body.light .msg.bot .msg-bubble{background:rgba(26,107,255,.08);border-color:rgba(26,107,255,.15)}
+body.light input,body.light textarea,body.light select{background:rgba(255,255,255,.9);color:#0d1f3c}
+body.light .chat-input{background:rgba(255,255,255,.9);color:#0d1f3c}
+</style>
+</head>
+<body>
+
+<!-- ─── NETWORK CANVAS ─── -->
+<canvas id="network-canvas"></canvas>
+
+<!-- ─── NAV ─── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1a6bff"/>
+            <stop offset="100%" stop-color="#00c8f0"/>
+          </linearGradient>
+        </defs>
+        <rect width="38" height="38" rx="10" fill="url(#lg1)" opacity=".15"/>
+        <rect x="1" y="1" width="36" height="36" rx="9" stroke="url(#lg1)" stroke-width="1.5" fill="none"/>
+        <circle cx="19" cy="19" r="4" fill="#00c8f0"/>
+        <circle cx="8" cy="9" r="2.5" fill="#1a6bff"/>
+        <circle cx="30" cy="9" r="2.5" fill="#1a6bff"/>
+        <circle cx="8" cy="29" r="2.5" fill="#1a6bff"/>
+        <circle cx="30" cy="29" r="2.5" fill="#1a6bff"/>
+        <line x1="10" y1="9" x2="17" y2="17" stroke="#1a6bff" stroke-width="1.2" opacity=".7"/>
+        <line x1="28" y1="9" x2="21" y2="17" stroke="#1a6bff" stroke-width="1.2" opacity=".7"/>
+        <line x1="10" y1="29" x2="17" y2="21" stroke="#1a6bff" stroke-width="1.2" opacity=".7"/>
+        <line x1="28" y1="29" x2="21" y2="21" stroke="#1a6bff" stroke-width="1.2" opacity=".7"/>
+      </svg>
+    </div>
+    <div class="nav-brand">Aegis Network<span>Solutions · Saint-Martin</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#animations">Expertise</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#realisations">Réalisations</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">Demander un devis</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#animations" onclick="closeMobile()">Expertise</a>
+  <a href="#tarifs" onclick="closeMobile()">Tarifs</a>
+  <a href="#realisations" onclick="closeMobile()">Réalisations</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+  <a href="#contact" class="btn-primary" style="justify-content:center;margin-top:.5rem" onclick="closeMobile()">Demander un devis</a>
+</div>
+
+<!-- ─── THEME TOGGLE ─── -->
+<div class="theme-toggle">
+  <button class="theme-btn" id="themeBtn" title="Basculer mode clair/sombre">🌙</button>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Saint-Martin · Antilles françaises</div>
+    <h1 class="hero-title">Solutions <span class="accent">réseau &amp; sécurité</span> haut de gamme</h1>
+    <p class="hero-sub">Installation, maintenance et optimisation pour particuliers et professionnels. Expertise locale, standards internationaux.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">⚡ Demander un devis</a>
+      <a href="#services" class="btn-secondary">Découvrir nos services →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-n">200+</div><div class="stat-label">Installations réalisées</div></div>
+      <div class="stat"><div class="stat-n">24h</div><div class="stat-label">Délai de réponse</div></div>
+      <div class="stat"><div class="stat-n">5★</div><div class="stat-label">Satisfaction client</div></div>
+      <div class="stat"><div class="stat-n">5 ans</div><div class="stat-label">D'expertise locale</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WIRE DIVIDER ─── -->
+<div class="wire-divider" aria-hidden="true">
+  <svg class="wire-svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <path id="wire-path" d="M0,40 C120,10 240,70 360,40 C480,10 600,70 720,40 C840,10 960,70 1080,40 C1200,10 1320,70 1440,40" fill="none" stroke="url(#wg)" stroke-width="2"/>
+    <defs>
+      <linearGradient id="wg" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#1a6bff" stop-opacity="0"/>
+        <stop offset="30%" stop-color="#00c8f0" stop-opacity=".6"/>
+        <stop offset="70%" stop-color="#00c896" stop-opacity=".6"/>
+        <stop offset="100%" stop-color="#1a6bff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <circle id="wire-dot" r="5" fill="#00c8f0">
+      <animateMotion dur="4s" repeatCount="indefinite">
+        <mpath href="#wire-path"/>
+      </animateMotion>
+    </circle>
+  </svg>
+</div>
+
+<!-- ─── SERVICES ─── -->
+<section id="services">
+  <div class="section-head center">
+    <span class="section-tag reveal">Nos prestations</span>
+    <h2 class="section-title reveal">Services professionnels</h2>
+    <p class="section-sub reveal">Solutions complètes adaptées à vos besoins, de l'installation à la maintenance continue.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">📡</div>
+      <div class="service-name">Réseaux Wi-Fi & RJ45</div>
+      <div class="service-desc">Installation et configuration de réseaux sans fil haute performance et câblage structuré pour entreprises et particuliers.</div>
+      <span class="service-price">Dès 50€ / prise · Wi-Fi dès 150€</span>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">📷</div>
+      <div class="service-name">Vidéosurveillance IP</div>
+      <div class="service-desc">Caméras IP haute définition, enregistreurs NVR, accès à distance sécurisé. Protection complète de vos locaux.</div>
+      <span class="service-price">Dès 150€ · Pack 4 cam. dès 800€</span>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-icon">🛰️</div>
+      <div class="service-name">Internet & Starlink</div>
+      <div class="service-desc">Installation et optimisation Starlink, solutions satellite haut débit même dans les zones les moins bien couvertes de Saint-Martin.</div>
+      <span class="service-price">Installation dès 150€</span>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">🔌</div>
+      <div class="service-name">Fibre optique</div>
+      <div class="service-desc">Raccordement, tirage de câble fibre, splicing et optimisation de votre connexion optique pour des débits maximaux.</div>
+      <span class="service-price">Raccordement dès 100€</span>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">🛠️</div>
+      <div class="service-name">Maintenance & Dépannage</div>
+      <div class="service-desc">Intervention rapide, diagnostic réseau, résolution de pannes et contrats de maintenance pour une disponibilité optimale.</div>
+      <span class="service-price">Dès 50€/h · Contrat dès 50€/mois</span>
+    </div>
+    <div class="service-card reveal reveal-delay-3" style="border-color:rgba(0,200,150,.3);background:rgba(0,200,150,.04)">
+      <div class="service-icon" style="background:var(--green-dim);border-color:rgba(0,200,150,.25)">🏝️</div>
+      <div class="service-name">Expertise Saint-Martin</div>
+      <div class="service-desc">Connaissance parfaite du terrain local, des contraintes climatiques et réglementaires propres aux Antilles françaises.</div>
+      <span class="service-price" style="background:var(--green-dim);border-color:rgba(0,200,150,.2);color:var(--green)">Disponible 7j/7</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WIRE DIVIDER 2 ─── -->
+<div class="wire-divider" aria-hidden="true">
+  <svg class="wire-svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <path id="wire-path2" d="M0,40 C180,70 360,10 540,40 C720,70 900,10 1080,40 C1260,70 1380,10 1440,40" fill="none" stroke="url(#wg2)" stroke-width="2"/>
+    <defs>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#00c896" stop-opacity="0"/>
+        <stop offset="50%" stop-color="#1a6bff" stop-opacity=".5"/>
+        <stop offset="100%" stop-color="#00c896" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <circle r="5" fill="#00c896">
+      <animateMotion dur="5s" repeatCount="indefinite">
+        <mpath href="#wire-path2"/>
+      </animateMotion>
+    </circle>
+  </svg>
+</div>
+
+<!-- ─── ANIMATIONS / EXPERTISE ─── -->
+<section id="animations">
+  <div class="section-head">
+    <span class="section-tag reveal">Technologie &amp; Savoir-faire</span>
+    <h2 class="section-title reveal">Nos équipements en détail</h2>
+    <p class="section-sub reveal">Visualisez les composants que nous installons et configurons pour vous.</p>
+  </div>
+  <div class="anim-tabs reveal">
+    <button class="anim-tab active" onclick="setTab('camera')">📷 Caméra IP</button>
+    <button class="anim-tab" onclick="setTab('rj45')">🔌 RJ45</button>
+    <button class="anim-tab" onclick="setTab('starlink')">🛰️ Starlink</button>
+    <button class="anim-tab" onclick="setTab('switch')">🌐 Switch réseau</button>
+  </div>
+  <div class="anim-stage reveal" id="anim-stage">
+    <!-- Camera animation rendered by JS -->
+  </div>
+</section>
+
+<!-- ─── WHY US ─── -->
+<section id="pourquoi">
+  <div class="section-head center">
+    <span class="section-tag reveal">Pourquoi nous</span>
+    <h2 class="section-title reveal">Ce qui nous distingue</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-icon">⚡</div>
+      <div class="why-title">Intervention rapide</div>
+      <div class="why-text">Disponible 7j/7, réponse sous 24h garantie. Interventions d'urgence possible selon disponibilité.</div>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-icon">🏆</div>
+      <div class="why-title">Expertise certifiée</div>
+      <div class="why-text">Jourdain Nathan, technicien expérimenté avec plus de 5 ans d'expérience en réseaux et sécurité.</div>
+    </div>
+    <div class="why-card reveal reveal-delay-3">
+      <div class="why-icon">🎯</div>
+      <div class="why-title">Solutions sur mesure</div>
+      <div class="why-text">Chaque installation est adaptée à vos besoins spécifiques, votre budget et votre environnement.</div>
+    </div>
+    <div class="why-card reveal reveal-delay-4">
+      <div class="why-icon">🌴</div>
+      <div class="why-title">Ancrage local</div>
+      <div class="why-text">Connaissance profonde de Saint-Martin, des contraintes locales et du tissu économique de l'île.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TARIFS ─── -->
+<section id="tarifs">
+  <div class="section-head center">
+    <span class="section-tag reveal">Transparence tarifaire</span>
+    <h2 class="section-title reveal">Nos grilles de prix</h2>
+    <p class="section-sub reveal">Tarifs indicatifs. Devis gratuit et personnalisé sur demande.</p>
+  </div>
+  <div class="tarifs-grid">
+    <div class="tarif-card reveal reveal-delay-1">
+      <div class="tarif-header">
+        <span class="tarif-icon">📡</span>
+        <span class="tarif-name">Réseaux informatiques</span>
+      </div>
+      <div class="tarif-items">
+        <div class="tarif-item"><span class="tarif-label">Installation Wi-Fi</span><span class="tarif-range">150€ – 600€</span></div>
+        <div class="tarif-item"><span class="tarif-label">Réseau complet entreprise</span><span class="tarif-range">500€ – 2 000€</span></div>
+        <div class="tarif-item"><span class="tarif-label">Câblage RJ45 / prise</span><span class="tarif-range">50€ – 100€</span></div>
+      </div>
+    </div>
+    <div class="tarif-card reveal reveal-delay-2">
+      <div class="tarif-header">
+        <span class="tarif-icon">📷</span>
+        <span class="tarif-name">Vidéosurveillance</span>
+      </div>
+      <div class="tarif-items">
+        <div class="tarif-item"><span class="tarif-label">Caméra simple + installation</span><span class="tarif-range">150€ – 300€</span></div>
+        <div class="tarif-item"><span class="tarif-label">Pack 4 caméras + installation</span><span class="tarif-range">800€ – 1 500€</span></div>
+      </div>
+    </div>
+    <div class="tarif-card reveal reveal-delay-3">
+      <div class="tarif-header">
+        <span class="tarif-icon">🛰️</span>
+        <span class="tarif-name">Internet & Starlink</span>
+      </div>
+      <div class="tarif-items">
+        <div class="tarif-item"><span class="tarif-label">Installation Starlink</span><span class="tarif-range">150€ – 400€</span></div>
+        <div class="tarif-item"><span class="tarif-label">Optimisation réseau</span><span class="tarif-range">100€ – 300€</span></div>
+      </div>
+    </div>
+    <div class="tarif-card reveal reveal-delay-1">
+      <div class="tarif-header">
+        <span class="tarif-icon">🔌</span>
+        <span class="tarif-name">Fibre optique</span>
+      </div>
+      <div class="tarif-items">
+        <div class="tarif-item"><span class="tarif-label">Raccordement fibre</span><span class="tarif-range">100€ – 300€</span></div>
+        <div class="tarif-item"><span class="tarif-label">Installation complète</span><span class="tarif-range">300€ – 1 000€</span></div>
+      </div>
+    </div>
+    <div class="tarif-card reveal reveal-delay-2">
+      <div class="tarif-header">
+        <span class="tarif-icon">🛠️</span>
+        <span class="tarif-name">Maintenance</span>
+      </div>
+      <div class="tarif-items">
+        <div class="tarif-item"><span class="tarif-label">Dépannage / diagnostic</span><span class="tarif-range">50€ – 100€/h</span></div>
+        <div class="tarif-item"><span class="tarif-label">Contrat mensuel</span><span class="tarif-range">50€ – 200€/mois</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── RÉALISATIONS ─── -->
+<section id="realisations">
+  <div class="section-head center">
+    <span class="section-tag reveal">Portfolio</span>
+    <h2 class="section-title reveal">Nos réalisations</h2>
+    <p class="section-sub reveal">Quelques exemples d'installations réalisées à Saint-Martin et ses environs.</p>
+  </div>
+  <div class="realisations-grid">
+    <div class="realisation-card reveal reveal-delay-1">
+      <div class="realisation-img">📡</div>
+      <div class="realisation-overlay">
+        <div class="realisation-title">Réseau Wi-Fi hôtel 4★</div>
+        <div class="realisation-sub">Grand Case · 48 points d'accès · 2024</div>
+      </div>
+    </div>
+    <div class="realisation-card reveal reveal-delay-2">
+      <div class="realisation-img">📷</div>
+      <div class="realisation-overlay">
+        <div class="realisation-title">Vidéosurveillance entrepôt</div>
+        <div class="realisation-sub">Marigot · 16 caméras IP · 2024</div>
+      </div>
+    </div>
+    <div class="realisation-card reveal reveal-delay-3">
+      <div class="realisation-img">🛰️</div>
+      <div class="realisation-overlay">
+        <div class="realisation-title">Installation Starlink résidentiel</div>
+        <div class="realisation-sub">Oyster Pond · Haut débit · 2023</div>
+      </div>
+    </div>
+    <div class="realisation-card reveal reveal-delay-1">
+      <div class="realisation-img">🔌</div>
+      <div class="realisation-overlay">
+        <div class="realisation-title">Câblage fibre bureau d'avocats</div>
+        <div class="realisation-sub">Philipsburg · 200m de fibre · 2024</div>
+      </div>
+    </div>
+    <div class="realisation-card reveal reveal-delay-2">
+      <div class="realisation-img">🌐</div>
+      <div class="realisation-overlay">
+        <div class="realisation-title">Infrastructure réseau restaurant</div>
+        <div class="realisation-sub">Orient Bay · 20 postes RJ45 · 2023</div>
+      </div>
+    </div>
+    <div class="realisation-card reveal reveal-delay-3">
+      <div class="realisation-img">🛠️</div>
+      <div class="realisation-overlay">
+        <div class="realisation-title">Maintenance préventive annuelle</div>
+        <div class="realisation-sub">Résidence privée · Marigot · 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AVIS ─── -->
+<section id="avis">
+  <div class="section-head center">
+    <span class="section-tag reveal">Témoignages</span>
+    <h2 class="section-title reveal">Ce que disent nos clients</h2>
+  </div>
+  <div class="avis-grid">
+    <div class="avis-card reveal reveal-delay-1">
+      <div class="stars">★★★★★</div>
+      <div class="avis-text">"Installation impeccable, travail soigné et rapide. Mon Wi-Fi couvre maintenant l'ensemble de ma villa sans aucune zone morte. Je recommande vivement !"</div>
+      <div class="avis-author">
+        <div class="avis-avatar">MC</div>
+        <div><div class="avis-name">Marie-Claire D.</div><div class="avis-loc">Grand Case · Villa particulière</div></div>
+      </div>
+    </div>
+    <div class="avis-card reveal reveal-delay-2">
+      <div class="stars">★★★★★</div>
+      <div class="avis-text">"Jourdain a installé notre système de vidéosurveillance en une journée. Très professionnel, explique tout clairement. Accès à distance parfait."</div>
+      <div class="avis-author">
+        <div class="avis-avatar">PT</div>
+        <div><div class="avis-name">Pierre T.</div><div class="avis-loc">Marigot · Commerce</div></div>
+      </div>
+    </div>
+    <div class="avis-card reveal reveal-delay-3">
+      <div class="stars">★★★★★</div>
+      <div class="avis-text">"Installation Starlink parfaite, même dans notre zone reculée. Connexion stable et rapide. Enfin du vrai haut débit à Saint-Martin !"</div>
+      <div class="avis-author">
+        <div class="avis-avatar">SB</div>
+        <div><div class="avis-name">Sandra B.</div><div class="avis-loc">Oyster Pond · Résidentiel</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="section-head">
+    <span class="section-tag reveal">Prenons contact</span>
+    <h2 class="section-title reveal">Demandez votre devis gratuit</h2>
+    <p class="section-sub reveal">Réponse garantie sous 24h. Déplacement et devis sans engagement.</p>
+  </div>
+  <div class="contact-wrap">
+    <div class="contact-info reveal">
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-detail">
+          <strong>Email</strong>
+          <a href="mailto:nathanjrd.sxm@gmail.com">nathanjrd.sxm@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📸</div>
+        <div class="contact-detail">
+          <strong>Instagram</strong>
+          <a href="https://instagram.com/_ath_jrd" target="_blank" rel="noopener">@_ath_jrd</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-detail">
+          <strong>Zone d'intervention</strong>
+          Saint-Martin, Antilles françaises
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏱️</div>
+        <div class="contact-detail">
+          <strong>Délai de réponse</strong>
+          Sous 24h garantie
+        </div>
+      </div>
+      <a href="https://wa.me/message/aegis-network" class="whatsapp-btn" style="margin-top:.5rem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contacter sur WhatsApp
+      </a>
+    </div>
+    <form class="contact-form reveal reveal-delay-2" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom &amp; Nom</label>
+          <input type="text" placeholder="Jean Dupont" required>
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" placeholder="+590 690 ...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="votre@email.com">
+      </div>
+      <div class="form-group">
+        <label>Type de projet</label>
+        <select>
+          <option value="">Sélectionner...</option>
+          <option>Installation Wi-Fi</option>
+          <option>Vidéosurveillance</option>
+          <option>Starlink / Internet</option>
+          <option>Fibre optique</option>
+          <option>Maintenance / Dépannage</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Décrivez votre projet..."></textarea>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center" id="submit-btn">Envoyer ma demande</button>
+    </form>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-brand">© 2025 Aegis Network Solutions · Jourdain Nathan · Saint-Martin</div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#contact">Contact</a>
+    <a href="https://instagram.com/_ath_jrd" target="_blank" rel="noopener">Instagram</a>
+    <a href="mailto:nathanjrd.sxm@gmail.com">Email</a>
+  </div>
+</footer>
+
+<!-- ─── CHATBOT ─── -->
+<button id="chatbot-toggle" onclick="toggleChat()" aria-label="Ouvrir le chat">
+  <span class="chat-icon">💬</span>
+</button>
+
+<div id="chatbot-window">
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Assistant Aegis</div>
+      <div class="chat-status"><span class="chat-status-dot"></span>En ligne · IA Claude</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()" aria-label="Fermer">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="quick-replies" id="quick-replies">
+    <button class="qr-btn" onclick="quickReply('Demander un devis')">💰 Demander un devis</button>
+    <button class="qr-btn" onclick="quickReply('Installation Wi-Fi')">📡 Wi-Fi</button>
+    <button class="qr-btn" onclick="quickReply('Caméras de surveillance')">📷 Caméras</button>
+    <button class="qr-btn" onclick="quickReply('Fibre optique')">🔌 Fibre</button>
+    <button class="qr-btn" onclick="quickReply('Problème Internet')">🚨 Problème Internet</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" placeholder="Écrivez votre message..." onkeydown="if(event.key==='Enter')sendMessage()">
+    <button class="chat-send" onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+// ─── NETWORK CANVAS ───
+const canvas = document.getElementById('network-canvas');
+const ctx = canvas.getContext('2d');
+let nodes = [], W, H;
+function resizeCanvas(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+function initNodes(){
+  nodes = [];
+  const count = Math.floor(W * H / 18000);
+  for(let i=0;i<count;i++){
+    nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1});
+  }
+}
+function drawNetwork(){
+  ctx.clearRect(0,0,W,H);
+  nodes.forEach(n=>{
+    n.x+=n.vx; n.y+=n.vy;
+    if(n.x<0||n.x>W)n.vx*=-1;
+    if(n.y<0||n.y>H)n.vy*=-1;
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(26,107,255,.5)';ctx.fill();
+  });
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){
+        ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
+        ctx.strokeStyle=`rgba(26,107,255,${.2*(1-d/140)})`;ctx.lineWidth=.7;ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawNetwork);
+}
+resizeCanvas();initNodes();drawNetwork();
+window.addEventListener('resize',()=>{resizeCanvas();initNodes()});
+
+// ─── NAV SCROLL ───
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled',window.scrollY>50);
+});
+
+// ─── HAMBURGER ───
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click',()=>{
+  mobileMenu.style.display = mobileMenu.style.display==='flex'?'none':'flex';
+});
+function closeMobile(){mobileMenu.style.display='none'}
+
+// ─── THEME TOGGLE ───
+const themeBtn = document.getElementById('themeBtn');
+let isDark = true;
+themeBtn.addEventListener('click',()=>{
+  isDark = !isDark;
+  document.body.classList.toggle('light',!isDark);
+  themeBtn.textContent = isDark?'🌙':'☀️';
+});
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ─── FORM SUBMIT ───
+function submitForm(e){
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.textContent='✅ Envoyé ! On vous recontacte sous 24h';
+  btn.style.background='var(--green)';
+  setTimeout(()=>{btn.textContent='Envoyer ma demande';btn.style.background=''},4000);
+}
+
+// ─── COMPONENT ANIMATIONS ───
+const stages = {
+  camera: renderCamera,
+  rj45: renderRJ45,
+  starlink: renderStarlink,
+  switch: renderSwitch
+};
+let currentTab = 'camera';
+let animFrame = null;
+
+function setTab(tab){
+  document.querySelectorAll('.anim-tab').forEach((t,i)=>{
+    const tabs = ['camera','rj45','starlink','switch'];
+    t.classList.toggle('active', tabs[i]===tab);
+  });
+  currentTab = tab;
+  if(animFrame)cancelAnimationFrame(animFrame);
+  stages[tab]();
+}
+
+// ── CAMERA DISASSEMBLY ──
+function renderCamera(){
+  const stage = document.getElementById('anim-stage');
+  stage.innerHTML = '<canvas id="animCanvas" width="700" height="320" style="max-width:100%"></canvas><div style="text-align:center;margin-top:1rem;font-size:.8rem;color:var(--text-muted)">Caméra IP HD — démontage &amp; remontage des composants</div>';
+  const c = document.getElementById('animCanvas');
+  const ctx2 = c.getContext('2d');
+  let t = 0;
+  const parts = [
+    {name:'Objectif',color:'#00c8f0',w:60,h:60,baseX:320,baseY:130,detachX:-180,detachY:-60,shape:'circle'},
+    {name:'Capteur CMOS',color:'#1a6bff',w:50,h:40,baseX:300,baseY:140,detachX:-120,detachY:80,shape:'rect'},
+    {name:'Processeur DSP',color:'#00c896',w:44,h:32,baseX:310,baseY:145,detachX:0,detachY:100,shape:'rect'},
+    {name:'Module IR',color:'#f59e0b',w:36,h:36,baseX:380,baseY:140,detachX:100,detachY:80,shape:'rect'},
+    {name:'Antenne Wi-Fi',color:'#a78bfa',w:12,h:60,baseX:360,baseY:100,detachX:160,detachY:-60,shape:'rect'},
+    {name:'Boîtier',color:'#374151',w:140,h:90,baseX:280,baseY:115,detachX:0,detachY:0,shape:'body'},
+    {name:'Support',color:'#6b7280',w:20,h:50,baseX:340,baseY:185,detachX:0,detachY:70,shape:'rect'},
+  ];
+
+  function ease(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2}
+
+  function draw(){
+    ctx2.clearRect(0,0,700,320);
+    const cycle = 6; // seconds
+    const phase = (t/60) % cycle;
+    let progress; // 0=assembled, 1=disassembled
+    if(phase < 1.5) progress = ease(phase/1.5);
+    else if(phase < 3) progress = 1;
+    else if(phase < 4.5) progress = 1 - ease((phase-3)/1.5);
+    else progress = 0;
+
+    // Draw label
+    ctx2.font = '500 13px DM Sans, sans-serif';
+    ctx2.fillStyle = 'rgba(200,210,240,0.5)';
+    ctx2.textAlign = 'center';
+    const label = progress < 0.5 ? 'Assemblée' : progress > 0.8 ? 'Composants séparés' : 'En cours...';
+    ctx2.fillText(label, 350, 295);
+
+    // Draw each part
+    [...parts].reverse().forEach(p=>{
+      const px = p.baseX + p.detachX * progress + (p.detachX===0?0:0);
+      const py = p.baseY + p.detachY * progress;
+      const alpha = 0.85 + 0.15*(1-progress);
+      ctx2.globalAlpha = alpha;
+
+      if(p.shape==='body'){
+        // Rounded rect housing
+        const grd = ctx2.createLinearGradient(px,py,px+p.w,py+p.h);
+        grd.addColorStop(0,'#1e293b');grd.addColorStop(1,'#0f172a');
+        ctx2.fillStyle = grd;
+        ctx2.beginPath();ctx2.roundRect(px,py,p.w,p.h,12);ctx2.fill();
+        ctx2.strokeStyle = 'rgba(100,140,220,.4)';ctx2.lineWidth=1.5;
+        ctx2.beginPath();ctx2.roundRect(px,py,p.w,p.h,12);ctx2.stroke();
+        // lens hole
+        ctx2.fillStyle='#0a1628';
+        ctx2.beginPath();ctx2.arc(px+40,py+p.h/2,22,0,Math.PI*2);ctx2.fill();
+      } else if(p.shape==='circle'){
+        const grd = ctx2.createRadialGradient(px+p.w/2,py+p.h/2,4,px+p.w/2,py+p.h/2,p.w/2);
+        grd.addColorStop(0,'#e0f4ff');grd.addColorStop(.4,p.color);grd.addColorStop(1,'#0a1628');
+        ctx2.fillStyle = grd;
+        ctx2.beginPath();ctx2.arc(px+p.w/2,py+p.h/2,p.w/2,0,Math.PI*2);ctx2.fill();
+        ctx2.strokeStyle = p.color+'99';ctx2.lineWidth=1.5;
+        ctx2.beginPath();ctx2.arc(px+p.w/2,py+p.h/2,p.w/2,0,Math.PI*2);ctx2.stroke();
+        // inner lens rings
+        if(progress > 0.3){
+          [16,10,5].forEach(r=>{
+            ctx2.beginPath();ctx2.arc(px+p.w/2,py+p.h/2,r,0,Math.PI*2);
+            ctx2.strokeStyle='rgba(255,255,255,.2)';ctx2.lineWidth=1;ctx2.stroke();
+          });
+        }
+      } else {
+        ctx2.fillStyle = p.color+'33';
+        ctx2.beginPath();ctx2.roundRect(px,py,p.w,p.h,6);ctx2.fill();
+        ctx2.strokeStyle = p.color+'88';ctx2.lineWidth=1.2;
+        ctx2.beginPath();ctx2.roundRect(px,py,p.w,p.h,6);ctx2.stroke();
+        // IC pattern
+        if(p.name.includes('Processeur')){
+          ctx2.fillStyle=p.color;
+          for(let i=0;i<3;i++) for(let j=0;j<2;j++){
+            ctx2.fillRect(px+8+i*12,py+8+j*12,8,8);
+          }
+        }
+      }
+
+      // Label on detach
+      if(progress > 0.3){
+        ctx2.globalAlpha = (progress-.3)/.7;
+        ctx2.font = '400 10px DM Sans, sans-serif';
+        ctx2.fillStyle = p.color;
+        ctx2.textAlign = 'center';
+        ctx2.fillText(p.name, px+p.w/2, py-5);
+      }
+      ctx2.globalAlpha = 1;
+    });
+
+    // Connection lines (wire effect)
+    if(progress > 0.1 && progress < 0.95){
+      parts.slice(0,5).forEach(p=>{
+        const px = p.baseX + p.detachX * progress;
+        const py2 = p.baseY + p.detachY * progress;
+        ctx2.beginPath();
+        ctx2.moveTo(parts[5].baseX+70, parts[5].baseY+45);
+        ctx2.lineTo(px+p.w/2, py2+p.h/2);
+        ctx2.strokeStyle = p.color+'44';ctx2.lineWidth=1;
+        ctx2.setLineDash([4,4]);ctx2.stroke();ctx2.setLineDash([]);
+      });
+    }
+
+    t++;
+    animFrame = requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── RJ45 WIRE ──
+function renderRJ45(){
+  const stage = document.getElementById('anim-stage');
+  stage.innerHTML = '<canvas id="animCanvas" width="700" height="320" style="max-width:100%"></canvas><div style="text-align:center;margin-top:1rem;font-size:.8rem;color:var(--text-muted)">Connecteur RJ45 — câblage T568B standard</div>';
+  const c = document.getElementById('animCanvas');
+  const ctx2 = c.getContext('2d');
+  let t = 0;
+  const wireColors = ['#ff8c00','#ff8c0088','#00a86b','#1a6bff','#1a6bff88','#ff8c00','#ff7f7f','#6b7280'];
+  const wireNames = ['O/B','Orange','V/B','Bleu','B/B','Vert','B/M','Marron'];
+
+  function draw(){
+    ctx2.clearRect(0,0,700,320);
+    const prog = (Math.sin(t/80)+1)/2;
+
+    // Draw plug body
+    const px=280,py=120;
+    ctx2.fillStyle='#1e3a5f';
+    ctx2.beginPath();ctx2.roundRect(px,py,140,80,8);ctx2.fill();
+    ctx2.strokeStyle='rgba(0,200,240,.4)';ctx2.lineWidth=1.5;
+    ctx2.beginPath();ctx2.roundRect(px,py,140,80,8);ctx2.stroke();
+
+    // Clip indicator
+    ctx2.fillStyle='rgba(0,200,150,.2)';
+    ctx2.beginPath();ctx2.roundRect(px+10,py+65,120,10,4);ctx2.fill();
+
+    // Draw 8 wires
+    wireColors.forEach((col,i)=>{
+      const wireX = px+16+i*14;
+      const wireLen = 80 + prog*60;
+      const swayY = Math.sin(t/40+i*0.8)*6*prog;
+      ctx2.strokeStyle=col;ctx2.lineWidth=4;ctx2.lineCap='round';
+      ctx2.beginPath();ctx2.moveTo(wireX,py);ctx2.bezierCurveTo(wireX,py-wireLen*.4,wireX+swayY*2,py-wireLen*.7,wireX+swayY,py-wireLen);ctx2.stroke();
+      // colored stripe inside plug
+      ctx2.fillStyle=col;
+      ctx2.fillRect(wireX-5,py+5,10,55);
+    });
+
+    // Labels
+    wireColors.forEach((col,i)=>{
+      const wireX = px+16+i*14;
+      const wireLen = 80 + prog*60;
+      ctx2.font='9px DM Sans, sans-serif';
+      ctx2.fillStyle=col;ctx2.textAlign='center';
+      ctx2.save();ctx2.translate(wireX,py-wireLen-12);ctx2.rotate(-Math.PI/6);
+      ctx2.fillText(wireNames[i],0,0);ctx2.restore();
+    });
+
+    // Crimping tool illustration
+    const tool_x = 460 + prog*20;
+    ctx2.fillStyle='rgba(26,107,255,.12)';
+    ctx2.strokeStyle='rgba(26,107,255,.4)';ctx2.lineWidth=1.5;
+    ctx2.beginPath();ctx2.roundRect(tool_x,145,60,40,4);ctx2.fill();ctx2.stroke();
+    ctx2.font='500 11px DM Sans, sans-serif';ctx2.fillStyle='rgba(200,210,240,.6)';ctx2.textAlign='center';
+    ctx2.fillText('Pince à sertir',tool_x+30,170);
+
+    // Pulse light at tip
+    const grd=ctx2.createRadialGradient(350,120,0,350,120,40*prog);
+    grd.addColorStop(0,'rgba(0,200,240,.4)');grd.addColorStop(1,'transparent');
+    ctx2.fillStyle=grd;
+    ctx2.beginPath();ctx2.arc(350,120,40*prog,0,Math.PI*2);ctx2.fill();
+
+    ctx2.font='12px DM Sans, sans-serif';ctx2.fillStyle='rgba(200,210,240,.5)';ctx2.textAlign='center';
+    ctx2.fillText('Câblage T568B · 8 fils · 100 Mbps — 1 Gbps',350,300);
+
+    t++;
+    animFrame=requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── STARLINK ──
+function renderStarlink(){
+  const stage = document.getElementById('anim-stage');
+  stage.innerHTML = '<canvas id="animCanvas" width="700" height="320" style="max-width:100%"></canvas><div style="text-align:center;margin-top:1rem;font-size:.8rem;color:var(--text-muted)">Starlink — signal satellite vers antenne</div>';
+  const c = document.getElementById('animCanvas');
+  const ctx2 = c.getContext('2d');
+  let t = 0;
+  const satellites = [{x:100,y:30,vx:.4},{x:400,y:50,vx:.3},{x:600,y:20,vx:-.35}];
+
+  function draw(){
+    ctx2.clearRect(0,0,700,320);
+
+    // Sky gradient
+    const sky=ctx2.createLinearGradient(0,0,0,220);
+    sky.addColorStop(0,'rgba(10,22,40,.9)');sky.addColorStop(1,'rgba(10,22,40,.1)');
+    ctx2.fillStyle=sky;ctx2.fillRect(0,0,700,220);
+
+    // Stars
+    ctx2.fillStyle='rgba(255,255,255,.5)';
+    [[50,40],[150,20],[230,60],[500,35],[580,15],[650,55],[320,25]].forEach(([sx,sy])=>{
+      const twinkle = (Math.sin(t/30+sx)*.3+.7);
+      ctx2.globalAlpha=twinkle;
+      ctx2.beginPath();ctx2.arc(sx,sy,1,0,Math.PI*2);ctx2.fill();
+    });
+    ctx2.globalAlpha=1;
+
+    // Move satellites
+    satellites.forEach(s=>{
+      s.x += s.vx;
+      if(s.x<-30)s.x=730;
+      if(s.x>730)s.x=-30;
+
+      // Satellite body
+      ctx2.fillStyle='#1a6bff';
+      ctx2.beginPath();ctx2.roundRect(s.x-12,s.y-5,24,10,3);ctx2.fill();
+      // Solar panels
+      ctx2.fillStyle='rgba(0,200,240,.6)';
+      ctx2.fillRect(s.x-28,s.y-3,14,6);
+      ctx2.fillRect(s.x+14,s.y-3,14,6);
+
+      // Signal beam
+      const dishX=350,dishY=230;
+      const beamAlpha = Math.max(0, Math.sin(t/40+s.x/100)*.5+.3);
+      ctx2.beginPath();
+      ctx2.moveTo(s.x,s.y+5);
+      ctx2.lineTo(dishX-15,dishY);
+      ctx2.lineTo(dishX+15,dishY);
+      ctx2.closePath();
+      ctx2.fillStyle=`rgba(0,200,240,${beamAlpha*.12})`;ctx2.fill();
+      ctx2.strokeStyle=`rgba(0,200,240,${beamAlpha*.6})`;ctx2.lineWidth=1;
+      ctx2.setLineDash([6,8]);
+      ctx2.beginPath();ctx2.moveTo(s.x,s.y+5);ctx2.lineTo(dishX,dishY);ctx2.stroke();
+      ctx2.setLineDash([]);
+    });
+
+    // Dish
+    ctx2.fillStyle='rgba(30,58,95,.9)';
+    ctx2.strokeStyle='rgba(0,200,240,.5)';ctx2.lineWidth=2;
+    // Parabola
+    ctx2.beginPath();
+    ctx2.ellipse(350,230,60,18,0,Math.PI,0);
+    ctx2.fill();ctx2.stroke();
+    // Pole
+    ctx2.fillStyle='#6b7280';ctx2.fillRect(347,228,6,50);
+    // Base
+    ctx2.fillStyle='#374151';ctx2.fillRect(330,275,40,8);
+
+    // Island
+    ctx2.fillStyle='rgba(0,200,150,.15)';
+    ctx2.beginPath();ctx2.ellipse(350,285,120,20,0,0,Math.PI*2);ctx2.fill();
+
+    // Signal pulse ring
+    const rings = [1.5,2.5,3.5];
+    rings.forEach(r=>{
+      const rad = ((t/50+r)%1)*80+10;
+      ctx2.beginPath();ctx2.arc(350,230,rad,0,Math.PI*2);
+      ctx2.strokeStyle=`rgba(0,200,240,${.5*(1-rad/90)})`;ctx2.lineWidth=1;ctx2.stroke();
+    });
+
+    // Data rate
+    ctx2.font='500 13px DM Sans, sans-serif';ctx2.fillStyle='rgba(0,200,240,.8)';ctx2.textAlign='center';
+    const speed = Math.floor(180+Math.sin(t/60)*20);
+    ctx2.fillText(`↓ ${speed} Mbps  ·  Lat < 40ms`,350,302);
+
+    t++;
+    animFrame=requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── SWITCH NETWORK ──
+function renderSwitch(){
+  const stage = document.getElementById('anim-stage');
+  stage.innerHTML = '<canvas id="animCanvas" width="700" height="320" style="max-width:100%"></canvas><div style="text-align:center;margin-top:1rem;font-size:.8rem;color:var(--text-muted)">Switch réseau managé — trafic en temps réel</div>';
+  const c = document.getElementById('animCanvas');
+  const ctx2 = c.getContext('2d');
+  let t = 0;
+  const ports = Array.from({length:12},(_,i)=>({active:Math.random()>.3,traffic:Math.random()}));
+  const packets = [];
+
+  function draw(){
+    ctx2.clearRect(0,0,700,320);
+
+    // Switch body
+    const sw_x=180,sw_y=130,sw_w=340,sw_h=60;
+    const grd=ctx2.createLinearGradient(sw_x,sw_y,sw_x,sw_y+sw_h);
+    grd.addColorStop(0,'#1e293b');grd.addColorStop(1,'#0f172a');
+    ctx2.fillStyle=grd;
+    ctx2.beginPath();ctx2.roundRect(sw_x,sw_y,sw_w,sw_h,8);ctx2.fill();
+    ctx2.strokeStyle='rgba(100,140,220,.4)';ctx2.lineWidth=1.5;
+    ctx2.beginPath();ctx2.roundRect(sw_x,sw_y,sw_w,sw_h,8);ctx2.stroke();
+
+    // Brand text
+    ctx2.font='500 12px DM Sans, sans-serif';ctx2.fillStyle='rgba(200,210,240,.4)';ctx2.textAlign='left';
+    ctx2.fillText('AEGIS SW-2400G',sw_x+12,sw_y+36);
+
+    // Ports
+    ports.forEach((p,i)=>{
+      const px=sw_x+14+(i%12)*26;
+      const py=sw_y+(i<6?12:36);
+      // Port outline
+      ctx2.fillStyle='#0a1628';
+      ctx2.beginPath();ctx2.roundRect(px,py,20,14,3);ctx2.fill();
+      ctx2.strokeStyle='rgba(100,140,220,.3)';ctx2.lineWidth=1;
+      ctx2.beginPath();ctx2.roundRect(px,py,20,14,3);ctx2.stroke();
+      // LED indicator
+      const blink = p.active?(Math.sin(t/10+i)>.0?1:.3):.1;
+      ctx2.fillStyle = p.active?`rgba(0,200,150,${blink})`:'rgba(255,80,80,.3)';
+      ctx2.beginPath();ctx2.arc(px+10,py-5,3,0,Math.PI*2);ctx2.fill();
+    });
+
+    // Device nodes
+    const devices = [
+      {x:90,y:80,icon:'💻',label:'PC'},
+      {x:90,y:190,icon:'📱',label:'Mobile'},
+      {x:90,y:280,icon:'📷',label:'Caméra'},
+      {x:610,y:80,icon:'🖨️',label:'Imprimante'},
+      {x:610,y=190,icon:'📡',label:'Wi-Fi AP'},
+      {x:610,y:280,icon:'🌐',label:'Internet'},
+    ];
+    devices.forEach(d=>{
+      ctx2.font='1.2rem serif';ctx2.textAlign='center';ctx2.fillStyle='rgba(200,210,240,.9)';
+      ctx2.fillText(d.icon,d.x,d.y);
+      ctx2.font='10px DM Sans, sans-serif';ctx2.fillStyle='rgba(200,210,240,.5)';
+      ctx2.fillText(d.label,d.x,d.y+14);
+    });
+
+    // Cables from devices to switch
+    const switchLeft = {x:sw_x,y:sw_y+sw_h/2};
+    const switchRight = {x:sw_x+sw_w,y:sw_y+sw_h/2};
+    [[{x:90,y:75},{x:180,y:160}],[{x:90,y:185},{x:180,y:160}],[{x:90,y:275},{x:180,y:160}]].forEach(([from,to])=>{
+      ctx2.beginPath();ctx2.moveTo(from.x,from.y);ctx2.bezierCurveTo(from.x+50,from.y,to.x-30,to.y,to.x,to.y);
+      ctx2.strokeStyle='rgba(26,107,255,.3)';ctx2.lineWidth=1.5;ctx2.stroke();
+    });
+    [[{x:610,y:75},{x:520,y:160}],[{x:610,y:185},{x:520,y:160}],[{x:610,y:275},{x:520,y:160}]].forEach(([from,to])=>{
+      ctx2.beginPath();ctx2.moveTo(from.x,from.y);ctx2.bezierCurveTo(from.x-50,from.y,to.x+30,to.y,to.x,to.y);
+      ctx2.strokeStyle='rgba(0,200,150,.3)';ctx2.lineWidth=1.5;ctx2.stroke();
+    });
+
+    // Animated packets
+    if(Math.random()>.7){
+      packets.push({x:90,y:[75,185,275][Math.floor(Math.random()*3)],targetX:610,targetY:[75,185,275][Math.floor(Math.random()*3)],t:0,color:['#1a6bff','#00c8f0','#00c896'][Math.floor(Math.random()*3)]});
+    }
+    for(let i=packets.length-1;i>=0;i--){
+      const pk=packets[i];pk.t+=.015;
+      if(pk.t>1){packets.splice(i,1);continue;}
+      const cx=pk.x+(pk.targetX-pk.x)*pk.t;
+      const cy=pk.y+(pk.targetY-pk.y)*pk.t;
+      ctx2.beginPath();ctx2.arc(cx,cy,4,0,Math.PI*2);
+      ctx2.fillStyle=pk.color;ctx2.fill();
+      ctx2.beginPath();ctx2.arc(cx,cy,8,0,Math.PI*2);
+      ctx2.fillStyle=pk.color+'44';ctx2.fill();
+    }
+
+    // Throughput counter
+    ctx2.font='500 12px DM Sans, sans-serif';ctx2.fillStyle='rgba(0,200,240,.7)';ctx2.textAlign='center';
+    const gbps=(0.8+Math.sin(t/80)*.2).toFixed(2);
+    ctx2.fillText(`Trafic : ${gbps} Gbps · ${packets.length} paquets actifs`,350,305);
+
+    t++;
+    animFrame=requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// Start with camera
+renderCamera();
+
+// ─── CHATBOT ───
+let chatOpen = false;
+let autoMsgShown = false;
+let chatState = 'menu'; // menu | collecting_name | collecting_phone | collecting_project | done
+let leadData = {};
+const ANTHROPIC_KEY_PLACEHOLDER = ''; // Handled by proxy
+
+// Messages history for AI
+let conversationHistory = [];
+
+function toggleChat(){
+  chatOpen = !chatOpen;
+  document.getElementById('chatbot-window').classList.toggle('open',chatOpen);
+  document.getElementById('chatbot-toggle').classList.toggle('open',chatOpen);
+  if(chatOpen && document.getElementById('chat-messages').children.length===0){
+    setTimeout(()=>addBotMessage("Bonjour 👋 Besoin d'un devis ou d'une installation réseau à Saint-Martin ? Je peux vous aider !", true),300);
+  }
+}
+
+// Auto open after 10s
+setTimeout(()=>{
+  if(!chatOpen && !autoMsgShown){
+    autoMsgShown = true;
+    toggleChat();
+  }
+},10000);
+
+function addBotMessage(text, showQuickReplies=false){
+  const msgs = document.getElementById('chat-messages');
+  // Show typing
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'msg bot';
+  typingDiv.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typingDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(()=>{
+    typingDiv.remove();
+    const div = document.createElement('div');
+    div.className = 'msg bot';
+    div.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-bubble">${text}</div>`;
+    div.style.animation='msgIn .3s cubic-bezier(0.34,1.56,0.64,.1)';
+    msgs.appendChild(div);
+    if(showQuickReplies) document.getElementById('quick-replies').style.display='flex';
+    else document.getElementById('quick-replies').style.display='none';
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 900 + Math.random()*400);
+}
+
+function addUserMessage(text){
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  document.getElementById('quick-replies').style.display='none';
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function quickReply(text){
+  document.getElementById('chat-input').value = '';
+  processMessage(text);
+}
+
+function sendMessage(){
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value='';
+  processMessage(text);
+}
+
+async function processMessage(text){
+  addUserMessage(text);
+
+  // Lead collection states
+  if(chatState==='collecting_name'){
+    leadData.name = text;
+    chatState='collecting_phone';
+    addBotMessage(`Merci ${text} 😊 Quel est votre numéro de téléphone ?`);
+    return;
+  }
+  if(chatState==='collecting_phone'){
+    leadData.phone = text;
+    chatState='collecting_project';
+    addBotMessage('Quel type de projet souhaitez-vous réaliser ? (Wi-Fi, caméras, fibre, Starlink...)', false);
+    return;
+  }
+  if(chatState==='collecting_project'){
+    leadData.project = text;
+    chatState='done';
+    addBotMessage(`✅ Merci <strong>${leadData.name}</strong> !<br><br>Nous avons bien noté votre projet : <em>${text}</em>.<br>Jourdain vous contactera au <strong>${leadData.phone}</strong> sous 24h.<br><br>Pour une réponse encore plus rapide, cliquez ci-dessous :<br><br><a href="https://wa.me/message/aegis" style="background:#25D366;color:#fff;padding:.4rem .8rem;border-radius:20px;text-decoration:none;font-size:.8rem">💬 WhatsApp direct</a>`);
+    return;
+  }
+
+  // Quick replies
+  const lc = text.toLowerCase();
+  if(lc.includes('devis') || lc.includes('demander')){
+    chatState='collecting_name';
+    addBotMessage("Bien sûr ! Pour préparer votre devis personnalisé, j'ai besoin de quelques infos. Quel est votre prénom et nom ?");
+    return;
+  }
+  if(lc.includes('wifi') || lc.includes('wi-fi') || lc.includes('réseau')){
+    addBotMessage("Nous proposons des installations Wi-Fi professionnelles entre <strong>150€ et 600€</strong> selon votre surface et vos besoins. Couverture totale garantie ! 📡<br><br>Souhaitez-vous un devis personnalisé ?", true);
+    return;
+  }
+  if(lc.includes('caméra') || lc.includes('camera') || lc.includes('surveillance') || lc.includes('vidéo')){
+    addBotMessage("Nos systèmes de vidéosurveillance commencent à <strong>150€ par caméra</strong> installée. Pack 4 caméras HD + NVR + accès à distance : <strong>800€ – 1 500€</strong>. 📷<br><br>Combien de caméras souhaitez-vous ?", false);
+    return;
+  }
+  if(lc.includes('fibre') || lc.includes('optique')){
+    addBotMessage("Raccordement fibre optique dès <strong>100€</strong>, installation complète entre <strong>300€ et 1 000€</strong> selon la longueur. 🔌<br>Où êtes-vous situé à Saint-Martin ?", false);
+    return;
+  }
+  if(lc.includes('starlink') || lc.includes('satellite') || lc.includes('internet')){
+    addBotMessage("L'installation Starlink est disponible dès <strong>150€</strong> (hors coût de l'équipement Starlink). Parfait pour les zones peu couvertes ! 🛰️<br><br>Souhaitez-vous un devis ?", true);
+    return;
+  }
+  if(lc.includes('problème') || lc.includes('panne') || lc.includes('dépann')){
+    addBotMessage("Pas de panique ! 🛠️ Jourdain intervient rapidement. Dépannage dès <strong>50€/heure</strong>.<br><br>Décrivez brièvement votre problème et on vous rappelle !", false);
+    return;
+  }
+  if(lc.includes('prix') || lc.includes('tarif') || lc.includes('coût') || lc.includes('combien')){
+    addBotMessage("Nos tarifs sont consultables sur la page Tarifs du site. En résumé :<br>• Wi-Fi : 150€ – 600€<br>• Caméras : 150€ – 1 500€<br>• Starlink : 150€ – 400€<br>• Dépannage : 50€/h<br><br>Devis gratuit sur demande !", true);
+    return;
+  }
+  if(lc.includes('bonjour') || lc.includes('salut') || lc.includes('hello') || lc.includes('bonsoir')){
+    addBotMessage("Bonjour ! 👋 Je suis l'assistant virtuel d'Aegis Network Solutions. Comment puis-je vous aider aujourd'hui ?", true);
+    return;
+  }
+  if(lc.includes('merci') || lc.includes('au revoir')){
+    addBotMessage("Avec plaisir ! 😊 N'hésitez pas à nous contacter si vous avez d'autres questions. Bonne journée !", true);
+    return;
+  }
+
+  // ─── AI FALLBACK via Claude API ───
+  await askClaude(text);
+}
+
+async function askClaude(userText){
+  conversationHistory.push({role:'user',content:userText});
+  const msgs = document.getElementById('chat-messages');
+  const typingDiv = document.createElement('div');
+  typingDiv.className='msg bot';
+  typingDiv.innerHTML='<div class="msg-avatar">🤖</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typingDiv);
+  msgs.scrollTop=msgs.scrollHeight;
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:300,
+        system:`Tu es l'assistant virtuel d'Aegis Network Solutions, une entreprise de réseaux et sécurité basée à Saint-Martin (Antilles françaises), dirigée par Jourdain Nathan. Tu réponds uniquement aux questions liées aux services de l'entreprise : Wi-Fi, caméras IP, Starlink, fibre optique, maintenance réseau. Sois concis (max 3 phrases), professionnel et chaleureux. Si une question est hors sujet, redirige poliment vers les services proposés. Les tarifs : Wi-Fi 150-600€, caméras 150-1500€, Starlink 150-400€, fibre 100-1000€, dépannage 50-100€/h. Contact : nathanjrd.sxm@gmail.com. Ne jamais inventer d'informations.`,
+        messages: conversationHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || "Je n'ai pas pu répondre. Contactez-nous directement !";
+    typingDiv.remove();
+    conversationHistory.push({role:'assistant',content:reply});
+    const div=document.createElement('div');
+    div.className='msg bot';
+    div.innerHTML=`<div class="msg-avatar">🤖</div><div class="msg-bubble">${reply}</div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop=msgs.scrollHeight;
+    document.getElementById('quick-replies').style.display='flex';
+  } catch(err){
+    typingDiv.remove();
+    addBotMessage("Je rencontre une difficulté. Contactez-nous directement : <a href='mailto:nathanjrd.sxm@gmail.com' style='color:var(--cyan)'>nathanjrd.sxm@gmail.com</a>",true);
+  }
+}
+
+// ─── ROUNDRECT POLYFILL ───
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    this.beginPath();this.moveTo(x+r,y);this.lineTo(x+w-r,y);this.quadraticCurveTo(x+w,y,x+w,y+r);this.lineTo(x+w,y+h-r);this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);this.lineTo(x+r,y+h);this.quadraticCurveTo(x,y+h,x,y+h-r);this.lineTo(x,y+r);this.quadraticCurveTo(x,y,x+r,y);this.closePath();return this;
+  };
+}
+</script>
+</body>
+</html>
