@@ -1,176 +1,321 @@
-"use client";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CNS | Computing Network Security - Expert SXM</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+    <style>
+        :root {
+            --primary: #0077B6;
+            --secondary: #00B4D8;
+            --accent: #00f2ff;
+            --dark: #01080e;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
 
-export default function Page() {
-  const [dark, setDark] = useState(false);
-  const [sent, setSent] = useState(false);
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--dark); color: white; overflow-x: hidden; width: 100%; }
 
-  async function handleSubmit(e: any) {
-    e.preventDefault();
-    setSent(true);
-  }
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
 
-  return (
-    <div className={dark ? "dark bg-black text-white" : "bg-white text-black"}>
-      {/* NAVBAR */}
-      <nav className="fixed top-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur z-50 shadow-sm">
-        <div className="max-w-6xl mx-auto flex justify-between p-4">
-          <h1 className="font-bold">Aegis Network</h1>
+        /* --- MENU HUB RADIAL (ADAPTATIF) --- */
+        #nav-hub { 
+            position: fixed; 
+            top: 35px; 
+            right: 80px; 
+            z-index: 10000; 
+            width: 70px; height: 70px; 
+        }
 
-          <div className="flex gap-6 items-center">
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
+        /* Responsive Menu : En bas à droite sur mobile pour le pouce */
+        @media (max-width: 768px) {
+            #nav-hub { top: auto; bottom: 30px; right: 30px; }
+            #nav-hub.active .n1 { transform: translate(-110px, -20px); }
+            #nav-hub.active .n2 { transform: translate(-90px, -90px); }
+            #nav-hub.active .n3 { transform: translate(-20px, -110px); }
+            #nav-hub.active .n4 { transform: translate(50px, -100px); }
+        }
 
-            <button
-              onClick={() => setDark(!dark)}
-              className="px-3 py-1 border rounded"
-            >
-              {dark ? "☀️" : "🌙"}
-            </button>
-          </div>
+        .sphere-toggle {
+            width: 70px; height: 70px; 
+            background: radial-gradient(circle at 30% 30%, var(--secondary), var(--primary));
+            border-radius: 50%; cursor: pointer; box-shadow: 0 0 25px var(--secondary);
+            display: flex; align-items: center; justify-content: center; position: relative; z-index: 10002;
+            border: 2px solid rgba(255,255,255,0.3); transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .sphere-toggle i { font-size: 1.5rem; color: white; transition: 0.5s; }
+        #nav-hub.active .sphere-toggle { transform: rotate(135deg); box-shadow: 0 0 40px var(--accent); }
+
+        .radial-menu {
+            position: absolute; top: 0; right: 0; width: 300px; height: 300px;
+            pointer-events: none; opacity: 0; transform: scale(0.5); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #nav-hub.active .radial-menu { opacity: 1; transform: scale(1); pointer-events: all; }
+
+        .node {
+            position: absolute; width: 55px; height: 55px; background: rgba(1, 8, 14, 0.95);
+            border: 2px solid var(--secondary); border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; transition: 0.3s; right: 8px; top: 8px; color: white;
+        }
+        .node:hover { background: var(--secondary); color: var(--dark); }
+        
+        #nav-hub.active .n1 { transform: translate(-120px, 10px); }
+        #nav-hub.active .n2 { transform: translate(-100px, 95px); }
+        #nav-hub.active .n3 { transform: translate(-35px, 155px); }
+        #nav-hub.active .n4 { transform: translate(55px, 175px); }
+
+        /* --- LAYOUT --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%; }
+        .section { padding: 80px 0; }
+        
+        /* Ajustement Hero Mobile */
+        @media (max-width: 768px) {
+            .section { padding: 60px 0; }
+            h1 { font-size: 2.2rem !important; }
+            p { font-size: 1rem !important; }
+        }
+
+        .title-tag { color: var(--secondary); font-weight: 800; letter-spacing: 3px; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; display: block; }
+
+        /* --- GRIDS RESPONSIVE --- */
+        .grid-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        
+        .service-card {
+            background: var(--glass); border: 1px solid var(--border); padding: 30px; border-radius: 25px;
+            cursor: pointer; transition: 0.4s; position: relative; overflow: hidden; backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
+        }
+        .service-card:hover { border-color: var(--secondary); }
+        .service-card i { font-size: 2rem; color: var(--secondary); margin-bottom: 20px; display: block; }
+        
+        .details-pane { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s ease; font-size: 0.9rem; line-height: 1.6; }
+        .service-card.active .details-pane { max-height: 400px; opacity: 1; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); }
+
+        .grid-chantiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .chantier-box { height: 320px; border-radius: 25px; overflow: hidden; position: relative; border: 1px solid var(--border); }
+        .chantier-img { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 0.8s; }
+        .chantier-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--dark) 50%, transparent); padding: 25px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .chantier-overlay h3 { font-size: 1.2rem; }
+
+        /* --- CONTACT RESPONSIVE --- */
+        .contact-wrapper {
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px;
+            background: var(--glass); padding: 40px; border-radius: 30px; border: 1px solid var(--border);
+        }
+        @media (max-width: 900px) { 
+            .contact-wrapper { grid-template-columns: 1fr; padding: 25px; } 
+            .contact-info-item { margin-bottom: 20px; }
+        }
+
+        .contact-info-item { display: flex; align-items: center; gap: 15px; }
+        .contact-info-item i { width: 45px; height: 45px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 1rem; flex-shrink: 0; }
+
+        input, textarea {
+            width: 100%; padding: 15px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            border-radius: 12px; color: white; margin-bottom: 15px; outline: none; transition: 0.3s; font-size: 16px; /* Empêche l'auto-zoom iOS */
+        }
+        input:focus, textarea:focus { border-color: var(--secondary); }
+
+        .btn-main {
+            background: var(--secondary); color: var(--dark); border: none; padding: 18px 40px;
+            border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.4s; text-transform: uppercase; width: 100%; /* Full width sur mobile */
+        }
+        @media (min-width: 768px) { .btn-main { width: auto; } }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- HUB NAV -->
+    <div id="nav-hub">
+        <div class="sphere-toggle" id="menuToggle"><i class="fas fa-plus"></i></div>
+        <div class="radial-menu">
+            <div class="node n1" onclick="jump('home')"><i class="fas fa-home"></i></div>
+            <div class="node n2" onclick="jump('services')"><i class="fas fa-server"></i></div>
+            <div class="node n3" onclick="jump('chantiers')"><i class="fas fa-project-diagram"></i></div>
+            <div class="node n4" onclick="jump('contact')"><i class="fas fa-envelope"></i></div>
         </div>
-      </nav>
-
-      {/* HERO */}
-      <section className="h-screen flex items-center justify-center text-center px-6 bg-gradient-to-b from-blue-900 to-blue-600 text-white">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <h1 className="text-4xl md:text-6xl font-bold">
-            Solutions réseau haut de gamme à Saint-Martin
-          </h1>
-
-          <p className="mt-4 opacity-80">
-            Installation, maintenance et optimisation professionnelle
-          </p>
-
-          <a
-            href="#contact"
-            className="mt-6 inline-block px-6 py-3 bg-green-400 rounded-xl"
-          >
-            Demander un devis
-          </a>
-        </motion.div>
-      </section>
-
-      {/* SERVICES */}
-      <section id="services" className="py-20 max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-10">
-          Nos services
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            "Réseaux informatiques",
-            "Caméras IP",
-            "Installation Starlink",
-            "Fibre optique",
-            "Maintenance",
-          ].map((s) => (
-            <div
-              key={s}
-              className="p-6 border rounded-xl hover:shadow-xl transition"
-            >
-              {s}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* TARIFS */}
-      <section className="bg-gray-100 dark:bg-gray-900 py-20 px-6">
-        <h2 className="text-3xl text-center font-bold mb-10">
-          Tarifs
-        </h2>
-
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-          {[
-            ["Wi-Fi", "150€ – 600€"],
-            ["Réseau entreprise", "500€ – 2000€"],
-            ["Caméras", "150€ – 300€"],
-            ["Starlink", "150€ – 400€"],
-            ["Fibre", "100€ – 1000€"],
-          ].map(([name, price]) => (
-            <div
-              key={name}
-              className="p-6 border rounded-xl hover:shadow-xl"
-            >
-              <h3 className="font-bold">{name}</h3>
-              <p className="text-green-400">{price}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* POURQUOI */}
-      <section className="py-20 px-6">
-        <h2 className="text-3xl text-center font-bold mb-10">
-          Pourquoi nous choisir
-        </h2>
-
-        <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto text-center">
-          {[
-            "Fiabilité",
-            "Rapidité",
-            "Professionnel",
-            "Sur mesure",
-          ].map((i) => (
-            <div key={i}>{i}</div>
-          ))}
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="py-20 px-6 bg-blue-900 text-white">
-        <h2 className="text-3xl text-center font-bold mb-10">
-          Contact
-        </h2>
-
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-md mx-auto flex flex-col gap-4"
-        >
-          <input
-            name="name"
-            placeholder="Nom"
-            className="p-3 rounded text-black"
-            required
-          />
-          <input
-            name="email"
-            placeholder="Email"
-            className="p-3 rounded text-black"
-            required
-          />
-          <textarea
-            name="message"
-            placeholder="Message"
-            className="p-3 rounded text-black"
-            required
-          />
-
-          <button className="bg-green-400 py-3 rounded">
-            Envoyer
-          </button>
-
-          {sent && <p>Message envoyé ✔</p>}
-        </form>
-
-        <div className="text-center mt-6">
-          <p>nathanjrd.sxm@gmail.com</p>
-          <a
-            href="https://wa.me/"
-            className="inline-block mt-4 bg-green-500 px-6 py-3 rounded"
-          >
-            WhatsApp
-          </a>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-6 text-center text-sm opacity-70">
-        © 2026 Aegis Network Solutions
-      </footer>
     </div>
-  );
-}
+
+    <!-- HERO -->
+    <section class="section container" id="home" style="min-height: 80vh; display: flex; align-items: center;">
+        <div data-aos="fade-up">
+            <span class="title-tag">Premium IT Services SXM</span>
+            <h1 style="font-size: clamp(2.2rem, 8vw, 4.5rem); line-height: 1.1; margin-bottom: 20px; font-weight: 800;">
+                Expertise <span style="color:var(--secondary)">Réseau</span> & <br>Sécurité.
+            </h1>
+            <p style="max-width: 600px; font-size: 1.1rem; opacity: 0.7; margin-bottom: 35px; line-height: 1.6;">
+                De l'installation Starlink à la remise aux normes de vos infrastructures, CNS sécurise le futur digital des entreprises de Saint-Martin.
+            </p>
+            <button class="btn-main" onclick="jump('contact')">Démarrer un Projet</button>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section container" id="services">
+        <span class="title-tag">Expertises</span>
+        <h2 style="font-size: 2.2rem; margin-bottom: 40px;" data-aos="fade-right">Solutions <span style="color:var(--secondary)">Pro</span></h2>
+        
+        <div class="grid-services">
+            <div class="service-card" onclick="this.classList.toggle('active')" data-aos="fade-up">
+                <i class="fas fa-satellite"></i>
+                <h3>Starlink & WiFi 6</h3>
+                <div class="details-pane">
+                    • Pose d'antennes Pro & Business<br>
+                    • Réseaux WiFi Mesh pour villas et bureaux<br>
+                    • Gestion intelligente du débit.
+                </div>
+            </div>
+
+            <div class="service-card" onclick="this.classList.toggle('active')" data-aos="fade-up">
+                <i class="fas fa-network-wired"></i>
+                <h3>Baies & Audit</h3>
+                <div class="details-pane">
+                    • Réorganisation de baies techniques<br>
+                    • Étiquetage et certification de câblage<br>
+                    • Maintenance préventive.
+                </div>
+            </div>
+
+            <div class="service-card" onclick="this.classList.toggle('active')" data-aos="fade-up">
+                <i class="fas fa-shield-virus"></i>
+                <h3>Cybersécurité</h3>
+                <div class="details-pane">
+                    • Installation de Firewalls (Sophos/Ubiquiti)<br>
+                    • VPN nomades sécurisés<br>
+                    • Sauvegardes Cloud automatisées.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJETS -->
+    <section class="section container" id="chantiers">
+        <span class="title-tag">Réalisations</span>
+        <h2 style="font-size: 2.2rem; margin-bottom: 40px;" data-aos="fade-left">Sur le <span style="color:var(--secondary)">Terrain</span></h2>
+        
+        <div class="grid-chantiers">
+            <div class="chantier-box" data-aos="zoom-in">
+                <div class="chantier-img" style="background-image: url('https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="chantier-overlay">
+                    <h3>Cabinet Anton - Marigot</h3>
+                    <p style="font-size:0.9rem; opacity:0.8;">Audit & Réfection infrastructure IP.</p>
+                </div>
+            </div>
+
+            <div class="chantier-box" data-aos="zoom-in">
+                <div class="chantier-img" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="chantier-overlay">
+                    <h3>Villas Terres Basses</h3>
+                    <p style="font-size:0.9rem; opacity:0.8;">Starlink Business & WiFi Extérieur.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section container" id="contact">
+        <span class="title-tag">Contact</span>
+        <h2 style="font-size: 2.2rem; margin-bottom: 40px;">Un besoin <span style="color:var(--secondary)">Urgent ?</span></h2>
+        
+        <div class="contact-wrapper" data-aos="fade-up">
+            <div class="contact-info">
+                <div class="contact-info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <p style="opacity:0.6; font-size:0.8rem;">Mobile / WhatsApp</p>
+                        <p style="font-weight: 700;">+590 690 00 00 00</p>
+                    </div>
+                </div>
+                <div class="contact-info-item" style="margin-top: 20px;">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <p style="opacity:0.6; font-size:0.8rem;">Email</p>
+                        <p style="font-weight: 700;">contact@cns-sxm.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('Merci, message bien reçu !');">
+                <input type="text" placeholder="Nom / Société" required>
+                <input type="email" placeholder="Votre Email" required>
+                <textarea rows="3" placeholder="Votre projet en quelques mots..." required></textarea>
+                <button type="submit" class="btn-main">Envoyer la demande</button>
+            </form>
+        </div>
+    </section>
+
+    <footer style="padding: 40px 0; text-align: center; opacity: 0.4; font-size: 0.8rem;">
+        &copy; 2026 CNS Saint-Martin - All Rights Reserved
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+
+        const navHub = document.getElementById('nav-hub');
+        const menuToggle = document.getElementById('menuToggle');
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navHub.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => navHub.classList.remove('active'));
+
+        function jump(id) {
+            const el = document.getElementById(id);
+            if(el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+                navHub.classList.remove('active');
+            }
+        }
+
+        // Background Animation
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+        function resize() { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Dot {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.v = 0.2 + Math.random() * 0.4;
+            }
+            update() { 
+                this.y -= this.v; 
+                if(this.y < 0) this.reset(); 
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 180, 216, 0.2)';
+                ctx.beginPath(); 
+                ctx.arc(this.x, this.y, 1, 0, Math.PI*2); 
+                ctx.fill();
+            }
+        }
+        for(let i=0; i<50; i++) dots.push(new Dot());
+        function anim() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            dots.forEach(d => { d.update(); d.draw(); });
+            requestAnimationFrame(anim);
+        }
+        anim();
+    </script>
+</body>
+</html>
